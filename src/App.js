@@ -7,21 +7,40 @@ import './App.css';
 
 
 class App extends Component {
-  state = { 
-    userInput: '',
-    name: '',
-    films: []
-   }
+  constructor(){
+    super()
+    this.state = { 
+      userInput: '',
+      name: '',
+      films: [],
+      data: []
+  }
+
+  this.resetName = this.resetName.bind(this)
+  }
+
 
    componentDidMount(){
     this.getFilms()
+    this.getData()
    }
 
+getData(){
+  axios.get(`/api/getData`).then(response => {
+    // console.log(response)
+    this.setState({
+      data: response.data
+    })
+  })
+}
+
    getFilms(){
+    //  console.log('in function')
      axios.get(`https://swapi.co/api/films/`).then( response => {
-       console.log(response.data)
+      //  console.log('in axios call')
+       console.log(response.data.results)
        this.setState({
-         films: response
+         films: response.data.results
        })
      })
    }
@@ -47,15 +66,16 @@ class App extends Component {
    }
 
   render() { 
+    console.log(this.props)
     return ( 
       <div className='App' >
         <div className="parent">
         <h1 style={{color: 'red'}}>PARENT</h1>
         <input type="text" onChange={(e) => this.handleChange(e.target.value)}/>
-        <button>add your name</button>
-        <Child />
-        <Child2 films={this.state.frilms}/>
-        <Child3 />
+        <button onClick={() => this.addName()} >add your name</button>
+        <Child name={this.state.name} resetName={this.resetName}/>
+        <Child2 films={this.state.films}/>
+        <Child3 data={this.state.data} />
         </div>
       </div>
      );
@@ -63,3 +83,5 @@ class App extends Component {
 }
  
 export default App;
+
+

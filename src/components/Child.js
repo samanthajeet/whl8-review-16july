@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 class Child extends Component {
   state = {  }
   render() { 
+    // console.log(1, this.props)
     return (
       <div style={{border: '1px solid blue'}} >
         <h1 style={{color: 'blue'}}>child</h1>
